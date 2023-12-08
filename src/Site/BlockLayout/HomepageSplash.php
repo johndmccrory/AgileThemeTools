@@ -186,25 +186,25 @@ class HomepageSplash extends AbstractBlockLayout
         $audio_attachment = null;
 
         /** @var SiteBlockAttachmentRepresentation $attachment */
-      foreach($attachments as $attachment) {
-
-            /** @var ItemRepresentation $item */
-            $item = $attachment->item();
-
-            if ($item) {
-              /** @var MediaRepresentation $media */
+        foreach ($attachments as $attachment) {
+          /** @var ItemRepresentation $item */
+          $item = $attachment->item();
+      
+          if ($item) {
+            /** @var MediaRepresentation $media */
               $media = $item->primaryMedia();
-
+            
               // Filter for media type. $media->mediaType() returns a MIME type.
 
-              if ($media) {
-                if (strpos($media->mediaType(), 'audio') !== false && $audio_attachment == null) {
-                  $audio_attachment = $attachment;
-                } else {
-                  $image_attachments[] = $attachment;
-                }
+              // Check if $media->mediaType() is not null before using strpos
+              if ($media && $media->mediaType() !== null) {
+                  if (strpos($media->mediaType(), 'audio') !== false && $audio_attachment == null) {
+                      $audio_attachment = $attachment;
+                  } else {
+                      $image_attachments[] = $attachment;
+                  }
               }
-            }
+          }
         }
 
         return $view->partial('common/block-layout/homepage-introduction', [
